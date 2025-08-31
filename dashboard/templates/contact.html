@@ -1,0 +1,281 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact | Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'assets/css/dashboard-theme.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+  <style>
+    body {
+      background: #f7f8fa;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      padding: 2rem 2.5rem 2.5rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #2d3a4b;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    label {
+      font-weight: 600;
+      color: #3a3a3a;
+      margin-bottom: 0.3rem;
+    }
+    input[type="email"], input[type="text"], input[type="url"] {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 0.8rem;
+      font-size: 1rem;
+      background: #fafbfc;
+      transition: border 0.2s;
+    }
+    input[type="email"]:focus, input[type="text"]:focus, input[type="url"]:focus {
+      border: 1.5px solid #6c63ff;
+      outline: none;
+    }
+    button[type="submit"] {
+      background: #6c63ff;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.9rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    button[type="submit"]:hover {
+      background: #554ee2;
+    }
+    @media (max-width: 600px) {
+      .container {
+        max-width: 98vw;
+        padding: 1.2rem 0.7rem 1.7rem 0.7rem;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile Menu Toggle -->
+  <div class="mobile-menu-toggle" id="mobileMenuToggle">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Off-canvas Mobile Menu -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <aside class="sidebar mobile-sidebar" id="mobileSidebar">
+    <div class="mobile-menu-header">
+      <div class="profile">
+        <div class="home__img" style="margin: 0 auto;">
+          <svg class="home__blob" viewBox="0 0 200 187" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <mask id="mask0" mask-type="alpha">
+              <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+            </mask>
+            <g mask="url(#mask0)">
+              <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+              <image class="home__blob-img" id="sidebarProfileImg" x="12" y="18" href="" alt="Profile Image"/>
+            </g>
+          </svg>
+        </div>
+        <h3 id="sidebarUserName">Ketsia</h3>
+        <p id="sidebarUserRole">User</p>
+      </div>
+      <button class="mobile-menu-close" id="mobileMenuClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <nav>
+      <a href="/dashboard"><i class="fas fa-th-large"></i>Dashboard</a>
+      <a href="/about"><i class="fas fa-user"></i>About</a>
+      <a href="/skills"><i class="fas fa-code"></i>Skills</a>
+      <a href="/qualifications"><i class="fas fa-graduation-cap"></i>Qualifications</a>
+      <a href="/services"><i class="fas fa-briefcase"></i>Services</a>
+      <a href="/portfolio"><i class="fas fa-folder-open"></i>Portfolio</a>
+      <a href="/testimonials"><i class="fas fa-comments"></i>Testimonial</a>
+      <a href="/contact" class="active"><i class="fas fa-envelope"></i>Contact</a>
+    </nav>
+  </aside>
+
+  <!-- Desktop Sidebar -->
+  <aside class="dashboard-sidebar desktop-sidebar">
+    <div class="profile">
+      <div class="home__img" style="margin: 0 auto;">
+        <svg class="home__blob" viewBox="0 0 200 187" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <mask id="mask0" mask-type="alpha">
+            <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+          </mask>
+          <g mask="url(#mask0)">
+            <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+            <image class="home__blob-img" id="sidebarProfileImg" x="12" y="18" href="" alt="Profile Image"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <nav>
+      <a href="/dashboard"><i class="fas fa-th-large"></i>Dashboard</a>
+      <a href="/about"><i class="fas fa-user"></i>About</a>
+      <a href="/skills"><i class="fas fa-code"></i>Skills</a>
+      <a href="/qualifications"><i class="fas fa-graduation-cap"></i>Qualifications</a>
+      <a href="/services"><i class="fas fa-briefcase"></i>Services</a>
+      <a href="/portfolio"><i class="fas fa-folder-open"></i>Portfolio</a>
+      <a href="/testimonials"><i class="fas fa-comments"></i>Testimonial</a>
+      <a href="/contact" class="active"><i class="fas fa-envelope"></i>Contact</a>
+    </nav>
+  </aside>
+  <main class="dashboard-main">
+    <div class="dashboard-card">
+      <div class="dashboard-title">Informations de contact</div>
+      <div class="dashboard-desc">Ajoutez vos informations de contact pour les afficher sur votre site public.</div>
+      <form id="contactForm">
+        <input type="email" id="email" name="email" placeholder="Adresse email" required>
+        <input type="tel" id="phone" name="phone" placeholder="Téléphone">
+        <input type="url" id="linkedin" name="linkedin" placeholder="Lien LinkedIn">
+        <button type="submit">Enregistrer</button>
+        <div id="form-status"></div>
+      </form>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyDfFIuWqz_-8AeNnoGAR2jSGMd7z2K22t0",
+      authDomain: "portfolio-aquand.firebaseapp.com",
+      projectId: "portfolio-aquand",
+      storageBucket: "portfolio-aquand.appspot.com",
+      messagingSenderId: "332649727227",
+      appId: "1:332649727227:web:30f35b4049081816bf9c5e",
+      measurementId: "G-QZ8EEY0TZC"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    document.getElementById("contactForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const linkedin = document.getElementById("linkedin").value;
+      try {
+        await addDoc(collection(db, "contacts"), { email, phone, linkedin });
+        await Swal.fire({
+          icon: 'success',
+          title: 'Contact enregistré !',
+          confirmButtonText: 'OK',
+        });
+        document.getElementById('form-status').innerHTML = '<span style="color:green;">Contact enregistré !</span>';
+        e.target.reset();
+      } catch (error) {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de l\'enregistrement du contact.',
+          confirmButtonText: 'OK',
+        });
+        document.getElementById('form-status').innerHTML = '<span style="color:red;">Erreur lors de l\'enregistrement.</span>';
+      }
+    });
+  </script>
+  <script>
+    fetch('{{ base_url }}/api/about/')
+      .then(response => response.json())
+      .then(result => {
+        if (Array.isArray(result.data) && result.data.length > 0) {
+          const about = result.data[0];
+          // Update profile image
+          if (about.photo) {
+            const img = document.getElementById('sidebarProfileImg');
+            if (img) {
+              img.setAttribute('href', about.photo);
+            }
+          }
+          // Update user name
+          if (about.first_name && about.last_name) {
+            const userName = document.getElementById('sidebarUserName');
+            if (userName) {
+              userName.textContent = `${about.first_name} ${about.last_name}`;
+            }
+          }
+          // Update user role
+          if (about.profession) {
+            const userRole = document.getElementById('sidebarUserRole');
+            if (userRole) {
+              userRole.textContent = about.profession;
+            }
+          }
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load profile image:', err);
+    });
+
+    // Mobile menu functionality
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+
+    function openMobileMenu() {
+      mobileSidebar.classList.add('active');
+      mobileMenuOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileSidebar.classList.remove('active');
+      mobileMenuOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileMenuToggle) {
+      mobileMenuToggle.addEventListener('click', openMobileMenu);
+    }
+    
+    if (mobileMenuClose) {
+      mobileMenuClose.addEventListener('click', closeMobileMenu);
+    }
+    
+    if (mobileMenuOverlay) {
+      mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close menu when clicking on a link
+    const mobileNavLinks = mobileSidebar.querySelectorAll('nav a');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMobileMenu();
+      }
+    });
+  </script>
+</body>
+</html>

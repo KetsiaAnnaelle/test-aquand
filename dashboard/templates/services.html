@@ -1,0 +1,341 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Services | Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'assets/css/dashboard-theme.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+</head>
+<body>
+  <!-- Mobile Menu Toggle -->
+  <div class="mobile-menu-toggle" id="mobileMenuToggle">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <!-- Off-canvas Mobile Menu -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+  <aside class="sidebar mobile-sidebar" id="mobileSidebar">
+    <div class="mobile-menu-header">
+      <div class="profile">
+        <div class="home__img" style="margin: 0 auto;">
+          <svg class="home__blob" viewBox="0 0 200 187" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <mask id="mask0" mask-type="alpha">
+              <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+            </mask>
+            <g mask="url(#mask0)">
+              <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+              <image class="home__blob-img" id="sidebarProfileImg" x="12" y="18" href="" alt="Profile Image"/>
+            </g>
+          </svg>
+        </div>
+        <!-- <h3 id="sidebarUserName">Loading...</h3>
+        <p id="sidebarUserRole">Loading...</p>
+      </div> -->
+      <button class="mobile-menu-close" id="mobileMenuClose">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <nav>
+      <a href="/dashboard"><i class="fas fa-th-large"></i>Dashboard</a>
+      <a href="/about"><i class="fas fa-user"></i>About</a>
+      <a href="/skills"><i class="fas fa-code"></i>Skills</a>
+      <a href="/qualifications"><i class="fas fa-graduation-cap"></i>Qualifications</a>
+      <a href="/services" class="active"><i class="fas fa-briefcase"></i>Services</a>
+      <a href="/portfolio"><i class="fas fa-folder-open"></i>Portfolio</a>
+      <a href="/testimonials"><i class="fas fa-comments"></i>Testimonial</a>
+      <a href="/contact"><i class="fas fa-envelope"></i>Contact</a>
+    </nav>
+  </aside>
+
+  <!-- Desktop Sidebar -->
+  <aside class="dashboard-sidebar desktop-sidebar">
+    <div class="profile">
+      <div class="home__img" style="margin: 0 auto;">
+        <svg class="home__blob" viewBox="0 0 200 187" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <mask id="mask0" mask-type="alpha">
+            <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+          </mask>
+          <g mask="url(#mask0)">
+            <path d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"/>
+            <image class="home__blob-img" id="sidebarProfileImg" x="12" y="18" href="" alt="Profile Image"/>
+          </g>
+        </svg>
+      </div>
+      <!-- <h3 id="sidebarUserName">Loading...</h3>
+      <p id="sidebarUserRole">Loading...</p> -->
+    </div>
+    <nav>
+      <a href="/dashboard"><i class="fas fa-th-large"></i>Dashboard</a>
+      <a href="/about"><i class="fas fa-user"></i>About</a>
+      <a href="/skills"><i class="fas fa-code"></i>Skills</a>
+      <a href="/qualifications"><i class="fas fa-graduation-cap"></i>Qualifications</a>
+      <a href="/services" class="active"><i class="fas fa-briefcase"></i>Services</a>
+      <a href="/portfolio"><i class="fas fa-folder-open"></i>Portfolio</a>
+      <a href="/testimonials"><i class="fas fa-comments"></i>Testimonial</a>
+      <a href="/contact"><i class="fas fa-envelope"></i>Contact</a>
+    </nav>
+  </aside>
+  <main class="dashboard-main">
+    <div class="dashboard-card">
+      <div class="dashboard-title">{% if is_edit %}Modifier le service{% else %}Services{% endif %}</div>
+      <div class="dashboard-desc">{% if is_edit %}Modifiez les informations de ce service.{% else %}Ajoutez ou modifiez vos services pour les afficher sur votre site public.{% endif %}</div>
+    <form id="servicesForm">
+        <input type="text" name="service" placeholder="Service" required>
+        <div class="input-error" id="error-service"></div>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <div class="input-error" id="error-description"></div>
+      <button type="submit">{% if is_edit %}Modifier{% else %}Ajouter{% endif %}</button>
+        <div id="form-status"></div>
+    </form>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+  <script>
+    // Check if we're in edit mode
+    const isEditMode = {{ is_edit|yesno:"true,false" }};
+    const itemId = {{ item_id|default:"null" }};
+    
+    // Load existing data if in edit mode
+    if (isEditMode && itemId) {
+      loadServiceData(itemId);
+    }
+    
+    async function loadServiceData(id) {
+      try {
+        const response = await fetch(`{{ base_url }}/api/services/edit/${id}/`);
+        const result = await response.json();
+        if (result.success && result.data) {
+          const data = result.data;
+          
+          // Pre-fill form fields
+          document.querySelector('input[name="service"]').value = data.service || '';
+          document.querySelector('textarea[name="description"]').value = data.description || '';
+        }
+      } catch (err) {
+        console.error('Failed to load service data:', err);
+      }
+    }
+
+    document.getElementById('servicesForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      // Clear all per-field errors
+      ['service', 'description'].forEach(field => {
+        document.getElementById('error-' + field).textContent = '';
+      });
+      const form = e.target;
+      const service = form.service.value.trim();
+      const description = form.description.value.trim();
+      let hasError = false;
+      // Client-side validation
+      if (!service) {
+        document.getElementById('error-service').textContent = "Le service est requis.";
+        hasError = true;
+      } else if (service.length < 3) {
+        document.getElementById('error-service').textContent = "Le service doit contenir au moins 3 caractères.";
+        hasError = true;
+      }
+      if (!description) {
+        document.getElementById('error-description').textContent = "La description est requise.";
+        hasError = true;
+      } else if (description.length < 10) {
+        document.getElementById('error-description').textContent = "La description doit contenir au moins 10 caractères.";
+        hasError = true;
+      }
+      if (hasError) return;
+      const formData = new FormData(form);
+      const statusDiv = document.getElementById('form-status');
+      statusDiv.innerHTML = '';
+      try {
+        let url = '{{ base_url }}/api/services/';
+        let method = 'POST';
+        
+        if (isEditMode && itemId) {
+          url = `{{ base_url }}/api/services/edit/${itemId}/`;
+          method = 'PUT';
+          
+          // Convert FormData to JSON for PUT request
+          const jsonData = {};
+          for (let [key, value] of formData.entries()) {
+            jsonData[key] = value;
+          }
+          
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData),
+          });
+          
+          const data = await response.json();
+          if (data.success) {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Service modifié !',
+              confirmButtonText: 'OK',
+            });
+            statusDiv.innerHTML = '<span style="color:green;">Service modifié !</span>';
+            setTimeout(() => {
+              window.location.href = '/dashboard';
+            }, 1500);
+          } else if (data.errors) {
+            // Show server-side errors under each field if possible
+            for (const [field, errors] of Object.entries(data.errors)) {
+              const errorDiv = document.getElementById('error-' + field);
+              if (errorDiv) {
+                errorDiv.textContent = errors.join(', ');
+              }
+            }
+            // Also show SweetAlert for global/server errors
+            let errorList = '<ul class="form-error-list">';
+            for (const [field, errors] of Object.entries(data.errors)) {
+              errors.forEach(error => {
+                errorList += `<li><strong>${field}:</strong> ${error}</li>`;
+              });
+            }
+            errorList += '</ul>';
+            statusDiv.innerHTML = errorList;
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              html: errorList,
+              confirmButtonText: 'OK',
+            });
+          }
+        } else {
+          // Original POST logic for creating new service
+          const response = await fetch(url, {
+            method: method,
+            body: formData,
+          });
+          const data = await response.json();
+          if (data.success) {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Service ajouté !',
+              confirmButtonText: 'OK',
+            });
+            statusDiv.innerHTML = '<span style="color:green;">Service ajouté !</span>';
+            form.reset();
+          } else if (data.errors) {
+          // Show server-side errors under each field if possible
+          for (const [field, errors] of Object.entries(data.errors)) {
+            const errorDiv = document.getElementById('error-' + field);
+            if (errorDiv) {
+              errorDiv.textContent = errors.join(', ');
+            }
+          }
+          // Also show SweetAlert for global/server errors
+          let errorList = '<ul class="form-error-list">';
+          for (const [field, errors] of Object.entries(data.errors)) {
+            errors.forEach(error => {
+              errorList += `<li><strong>${field}:</strong> ${error}</li>`;
+            });
+          }
+          errorList += '</ul>';
+          statusDiv.innerHTML = errorList;
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            html: errorList,
+            confirmButtonText: 'OK',
+          });
+        }
+      }
+      } catch (err) {
+        statusDiv.innerHTML = '<p style="color:red;">Erreur lors de la soumission du formulaire.</p>';
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de la soumission du formulaire.',
+          confirmButtonText: 'OK',
+        });
+      }
+    });
+  </script>
+  <script>
+    fetch('{{ base_url }}/api/about/')
+      .then(response => response.json())
+      .then(result => {
+        if (Array.isArray(result.data) && result.data.length > 0) {
+          const about = result.data[0];
+          
+          // Update all profile images (both mobile and desktop)
+          const profileImages = document.querySelectorAll('#sidebarProfileImg');
+          profileImages.forEach(img => {
+            if (about.photo) {
+              img.setAttribute('href', about.photo);
+            }
+          });
+          
+          // Update all user names (both mobile and desktop)
+          const userNames = document.querySelectorAll('#sidebarUserName');
+          userNames.forEach(userName => {
+            if (about.first_name && about.last_name) {
+              userName.textContent = `${about.first_name} ${about.last_name}`;
+            }
+          });
+          
+          // Update all user roles (both mobile and desktop)
+          const userRoles = document.querySelectorAll('#sidebarUserRole');
+          userRoles.forEach(userRole => {
+            if (about.profession) {
+              userRole.textContent = about.profession;
+            }
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load profile image:', err);
+    });
+
+    // Mobile menu functionality
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+
+    function openMobileMenu() {
+      mobileSidebar.classList.add('active');
+      mobileMenuOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileSidebar.classList.remove('active');
+      mobileMenuOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileMenuToggle) {
+      mobileMenuToggle.addEventListener('click', openMobileMenu);
+    }
+    
+    if (mobileMenuClose) {
+      mobileMenuClose.addEventListener('click', closeMobileMenu);
+    }
+    
+    if (mobileMenuOverlay) {
+      mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close menu when clicking on a link
+    const mobileNavLinks = mobileSidebar.querySelectorAll('nav a');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMobileMenu();
+      }
+    });
+  </script>
+</body>
+</html>

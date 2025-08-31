@@ -1,0 +1,25 @@
+env/
+.env
+*env
+*.env
+
+db.sqlite3
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
+*.sqlite3-journal
+*.sqlite3-shm
+*.sqlite3-wal
+
+__pycache__/
+*.pyc
+
+backend/__pycache__/
+backend/**/*.py[cod]
+
+# Or just use this to ignore all __pycache__ folders recursively
+backend/**/__pycache__/

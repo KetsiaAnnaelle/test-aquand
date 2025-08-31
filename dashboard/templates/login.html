@@ -1,0 +1,135 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'assets/css/login-register-theme.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+  <style>
+    .form-error-list {
+      color: #d32f2f;
+      background: #fff0f0;
+      border: 1px solid #d32f2f;
+      border-radius: 8px;
+      padding: 0.7em 1em;
+      margin: 1em 0;
+      list-style: disc inside;
+      font-size: 1rem;
+    }
+    .form-error-list li {
+      margin-bottom: 0.3em;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <form class="auth-card" id="loginForm">
+      <h2> CONNECTEZ-VOUS</h2>
+      <p class="subtitle">POUR CONTINUER</p>
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-user"></i></span>
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+        <div class="input-error" id="error-username"></div>
+      </div>
+      <div class="input-group">
+        <span class="input-icon"><i class="fas fa-lock"></i></span>
+        <input type="password" name="password" placeholder="Mot de passe" required>
+        <div class="input-error" id="error-password"></div>
+    </div>
+      <button type="submit" class="auth-btn">Login</button>
+      <div id="login-errors"></div>
+      <p class="switch-link">Pas de compte ? <a href="/register">Créer un compte</a></p>
+      </form>
+  </div>
+  <!-- For development, use local Yup file. For production, use CDN below. -->
+  <!-- <script src="../assets/js/yup.umd.js"></script> -->
+  <!-- <script src="https://unpkg.com/yup@0.32.11/dist/yup.umd.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+<script type="module">
+    import * as yup from 'https://cdn.jsdelivr.net/npm/yup@1.2.0/+esm';
+    const loginSchema = yup.object({
+      username: yup.string().required("Le nom d'utilisateur est requis."),
+      password: yup.string().required("Le mot de passe est requis."),
+    });
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+      ['username', 'password'].forEach(field => {
+        document.getElementById('error-' + field).textContent = '';
+      });
+      const form = e.target;
+      const formDataObj = {
+        username: form.username.value.trim(),
+        password: form.password.value,
+      };
+      try {
+        await loginSchema.validate(formDataObj, { abortEarly: false });
+      } catch (validationError) {
+        if (validationError.inner) {
+          validationError.inner.forEach(err => {
+            const errorDiv = document.getElementById('error-' + err.path);
+            if (errorDiv) errorDiv.textContent = err.message;
+      });
+        }
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur de validation',
+          text: 'Veuillez remplir tous les champs requis.',
+          confirmButtonText: 'OK',
+        });
+        return;
+      }
+      const formData = new FormData(form);
+      const errorsDiv = document.getElementById('login-errors');
+      errorsDiv.innerHTML = '';
+      try {
+        const response = await fetch('{{ base_url }}/api/login/', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await response.json();
+        if (data.success) {
+          await Swal.fire({
+            icon: 'success',
+            title: 'Connexion réussie !',
+            text: 'Bienvenue !',
+            confirmButtonText: 'OK',
+          });
+          localStorage.setItem('loggedIn', 'true');
+          window.location.href = 'dashboard.html';
+        } else if (data.errors) {
+          for (const [field, errors] of Object.entries(data.errors)) {
+            const errorDiv = document.getElementById('error-' + field);
+            if (errorDiv) errorDiv.textContent = errors.join(', ');
+          }
+          let errorList = '<ul class="form-error-list">';
+          for (const [field, errors] of Object.entries(data.errors)) {
+            errors.forEach(error => {
+              errorList += `<li>${error}</li>`;
+            });
+          }
+          errorList += '</ul>';
+          errorsDiv.innerHTML = errorList;
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            html: errorList,
+            confirmButtonText: 'OK',
+          });
+        }
+      } catch (err) {
+        errorsDiv.innerHTML = '<p>Erreur lors de la soumission du formulaire.</p>';
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Erreur lors de la soumission du formulaire.',
+          confirmButtonText: 'OK',
+        });
+      }
+  });
+</script>
+</body>
+</html>
