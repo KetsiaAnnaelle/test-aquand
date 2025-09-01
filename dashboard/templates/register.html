@@ -119,8 +119,9 @@
             text: 'Vous pouvez maintenant vous connecter.',
             confirmButtonText: 'OK',
           });
-            console.log("Redirection vers :", '/login/');
-          // window.location.href = `{% url 'login' %}`;
+           form.reset();
+            // console.log("Redirection vers :", '/login/');
+          window.location.href = `{% url 'login' %}`;
         } else if (data.errors) {
           for (const [field, errors] of Object.entries(data.errors)) {
             const errorDiv = document.getElementById('error-' + field);

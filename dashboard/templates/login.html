@@ -99,7 +99,7 @@
             confirmButtonText: 'OK',
           });
           localStorage.setItem('loggedIn', 'true');
-          window.location.href = 'dashboard.html';
+          window.location.href = '/dashboard/';
         } else if (data.errors) {
           for (const [field, errors] of Object.entries(data.errors)) {
             const errorDiv = document.getElementById('error-' + field);
