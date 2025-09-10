@@ -341,7 +341,7 @@
           <div id="aboutContent">
             <p>Aucune information enregistrée. Veuillez ajouter une description personnelle pour enrichir votre profil.</p>
           </div>
-          <!-- <button class="edit-btn" onclick="location.href='/about'">Edit</button> -->
+          <button class="edit-btn" onclick="location.href='/about'" id="aboutAddBtn" style="display: none;">Ajouter</button>
         </div>
         
         <div class="section-card" id="skillsSection">
@@ -349,7 +349,7 @@
           <ul id="skillsList" class="item-list">
             <li>Aucune compétence ajoutée pour le moment.</li>
           </ul>
-          <!-- <button class="edit-btn" onclick="location.href='/skills'">Edit</button> -->
+          <button class="edit-btn" onclick="location.href='/skills'" id="skillsAddBtn" style="display: none;">Ajouter</button>
         </div>
         
         <div class="section-card" id="qualificationsSection">
@@ -357,7 +357,7 @@
           <ul id="qualificationsList" class="item-list">
             <li>Vous n'avez pas encore renseigné vos diplômes ou certificats.</li>
           </ul>
-          <!-- <button class="edit-btn" onclick="location.href='/qualifications'">Edit</button> -->
+          <button class="edit-btn" onclick="location.href='/qualifications'" id="qualificationsAddBtn" style="display: none;">Ajouter</button>
         </div>
         
         <div class="section-card" id="servicesSection">
@@ -365,7 +365,7 @@
           <ul id="servicesList" class="item-list">
             <li>Vos services proposés n'apparaissent pas encore.</li>
           </ul>
-          <!-- <button class="edit-btn" onclick="location.href='/services'">Edit</button> -->
+          <button class="edit-btn" onclick="location.href='/services'" id="servicesAddBtn" style="display: none;">Ajouter</button>
         </div>
         
         <div class="section-card" id="portfolioSection">
@@ -373,7 +373,7 @@
           <ul id="portfolioList" class="item-list">
             <li>Vous n'avez pas encore ajouté de projets.</li>
           </ul>
-          <!-- <button class="edit-btn" onclick="location.href='/portfolio'">Edit</button> -->
+          <button class="edit-btn" onclick="location.href='/portfolio'" id="portfolioAddBtn" style="display: none;">Ajouter</button>
         </div>
         
         <div class="section-card" id="testimonialSection">
@@ -381,7 +381,7 @@
           <ul id="testimonialsList" class="item-list">
             <li>Aucun témoignage pour l'instant.</li>
           </ul>
-          <!-- <button class="edit-btn" onclick="location.href='/testimonials'">Edit</button> -->
+          <button class="edit-btn" onclick="location.href='/testimonials'" id="testimonialsAddBtn" style="display: none;">Ajouter</button>
         </div>
       </div>
     </div>
@@ -390,6 +390,7 @@
     // ABOUT
     async function loadAboutCard() {
       const aboutContent = document.getElementById('aboutContent');
+      const aboutAddBtn = document.getElementById('aboutAddBtn');
       try {
         const response = await fetch('{{ base_url }}/api/about/');
         const result = await response.json();
@@ -412,12 +413,18 @@
               </button>
             </div>
           `;
+          aboutAddBtn.style.display = 'none';
+        } else {
+          aboutAddBtn.style.display = 'block';
         }
-      } catch (err) {}
+      } catch (err) {
+        aboutAddBtn.style.display = 'block';
+      }
     }
     // SKILLS
     async function loadSkills() {
       const skillsList = document.getElementById('skillsList');
+      const skillsAddBtn = document.getElementById('skillsAddBtn');
       try {
         const response = await fetch('{{ base_url }}/api/skills/');
         const result = await response.json();
@@ -439,12 +446,18 @@
             </li>`;
           }
           skillsList.innerHTML = html;
+          skillsAddBtn.style.display = 'none';
+        } else {
+          skillsAddBtn.style.display = 'block';
         }
-      } catch (err) {}
+      } catch (err) {
+        skillsAddBtn.style.display = 'block';
+      }
     }
     // QUALIFICATIONS
     async function loadQualifications() {
       const qualificationsList = document.getElementById('qualificationsList');
+      const qualificationsAddBtn = document.getElementById('qualificationsAddBtn');
       try {
         const response = await fetch('{{ base_url }}/api/qualifications/');
         const result = await response.json();
@@ -466,12 +479,18 @@
             </li>`;
           }
           qualificationsList.innerHTML = html;
+          qualificationsAddBtn.style.display = 'none';
+        } else {
+          qualificationsAddBtn.style.display = 'block';
         }
-      } catch (err) {}
+      } catch (err) {
+        qualificationsAddBtn.style.display = 'block';
+      }
     }
     // SERVICES
     async function loadServices() {
       const servicesList = document.getElementById('servicesList');
+      const servicesAddBtn = document.getElementById('servicesAddBtn');
       try {
         const response = await fetch('{{ base_url }}/api/services/');
         const result = await response.json();
@@ -493,12 +512,18 @@
             </li>`;
           }
           servicesList.innerHTML = html;
+          servicesAddBtn.style.display = 'none';
+        } else {
+          servicesAddBtn.style.display = 'block';
         }
-      } catch (err) {}
+      } catch (err) {
+        servicesAddBtn.style.display = 'block';
+      }
     }
     // PORTFOLIO
     async function loadPortfolio() {
       const portfolioList = document.getElementById('portfolioList');
+      const portfolioAddBtn = document.getElementById('portfolioAddBtn');
       try {
         const response = await fetch('{{ base_url }}/api/portfolio/');
         const result = await response.json();
@@ -522,12 +547,18 @@
             </li>`;
           }
           portfolioList.innerHTML = html;
+          portfolioAddBtn.style.display = 'none';
+        } else {
+          portfolioAddBtn.style.display = 'block';
         }
-      } catch (err) {}
+      } catch (err) {
+        portfolioAddBtn.style.display = 'block';
+      }
     }
     // TESTIMONIALS
     async function loadTestimonials() {
       const testimonialsList = document.getElementById('testimonialsList');
+      const testimonialsAddBtn = document.getElementById('testimonialsAddBtn');
       try {
         const response = await fetch('{{ base_url }}/api/testimonials/');
         const result = await response.json();
@@ -549,8 +580,13 @@
             </li>`;
           }
           testimonialsList.innerHTML = html;
+          testimonialsAddBtn.style.display = 'none';
+        } else {
+          testimonialsAddBtn.style.display = 'block';
         }
-      } catch (err) {}
+      } catch (err) {
+        testimonialsAddBtn.style.display = 'block';
+      }
     }
     window.addEventListener('DOMContentLoaded', () => {
       loadAboutCard();
@@ -828,6 +864,53 @@
         Swal.fire({ icon: 'error', title: 'Erreur', text: 'Erreur lors de la suppression', confirmButtonText: 'OK' });
       }
     }
+
+    // Logout functionality
+    window.addEventListener('DOMContentLoaded', function() {
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+          const result = await Swal.fire({
+            title: 'Se déconnecter ?',
+            text: 'Êtes-vous sûr de vouloir vous déconnecter ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Oui, se déconnecter',
+            cancelButtonText: 'Annuler',
+            confirmButtonColor: '#e74c3c',
+            cancelButtonColor: '#6c757d'
+          });
+
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch('{{ base_url }}/api/logout/', {
+                method: 'POST',
+                headers: {
+                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+                  'Content-Type': 'application/json',
+                },
+              });
+
+              if (response.ok) {
+                await Swal.fire({
+                  icon: 'success',
+                  title: 'Déconnexion réussie !',
+                  text: 'Vous avez été déconnecté avec succès.',
+                  confirmButtonText: 'OK',
+                });
+                window.location.href = '/login/';
+              } else {
+                // If API logout fails, still redirect to login
+                window.location.href = '/login/';
+              }
+            } catch (error) {
+              // If there's an error, still redirect to login
+              window.location.href = '/login/';
+            }
+          }
+        });
+      }
+    });
   </script>
 
   <!-- Floating Preview Button -->
@@ -835,6 +918,11 @@
     <a href="/index/{{ user.id }}/" target="_blank" title="Preview Your Portfolio">
       <i class="fas fa-eye"></i>
     </a>
+  </div>
+
+  <!-- Floating Logout Button -->
+  <div class="floating-logout-btn" id="logoutBtn" title="Se déconnecter">
+    <i class="fas fa-sign-out-alt"></i>
   </div>
 
   <style>
@@ -854,6 +942,33 @@
       transition: all 0.3s ease;
       cursor: pointer;
       animation: pulse 2s infinite;
+    }
+
+    .floating-logout-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 100px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .floating-logout-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .floating-logout-btn i {
+      color: white;
+      font-size: 20px;
     }
 
     .floating-preview-btn:hover {
@@ -898,6 +1013,17 @@
       
       .floating-preview-btn a {
         font-size: 20px;
+      }
+
+      .floating-logout-btn {
+        bottom: 20px;
+        right: 80px;
+        width: 45px;
+        height: 45px;
+      }
+
+      .floating-logout-btn i {
+        font-size: 18px;
       }
     }
   </style>

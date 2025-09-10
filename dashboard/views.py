@@ -317,6 +317,13 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+@csrf_exempt
+def api_logout(request):
+    if request.method == 'POST':
+        logout(request)
+        return JsonResponse({'success': True, 'message': 'Déconnexion réussie'})
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
 #@login_required
 def dashboard_home(request):
     if request.method == 'POST':
