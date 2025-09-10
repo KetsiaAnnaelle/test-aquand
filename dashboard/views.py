@@ -47,8 +47,8 @@ def api_register(request):
             # Create UserProfile
             UserProfile.objects.create(
                 user=user,
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
+                first_name=form.cleaned_data.get('first_name', ''),
+                last_name=form.cleaned_data.get('last_name', ''),
                 email=form.cleaned_data['email']
             )
             # Don't auto-login, redirect to login page
@@ -345,7 +345,7 @@ def register_view(request):
     }
     return render(request, 'register.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def about_view(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -359,7 +359,7 @@ def about_view(request):
     }
     return render(request, 'about.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def skills_view(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -373,7 +373,7 @@ def skills_view(request):
     }
     return render(request, 'skills.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def services_view(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -387,7 +387,7 @@ def services_view(request):
     }
     return render(request, 'services.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def portfolio_view(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -401,7 +401,7 @@ def portfolio_view(request):
     }
     return render(request, 'portfolio.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def qualifications_view(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -415,7 +415,7 @@ def qualifications_view(request):
     }
     return render(request, 'qualifications.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def testimonials_view(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -429,7 +429,7 @@ def testimonials_view(request):
     }
     return render(request, 'testimonials.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def dashboard_view(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
@@ -443,7 +443,7 @@ def dashboard_view(request):
     }
     return render(request, 'dashboard.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def index_view(request, user_id=None):
     # If user_id is provided, verify it matches the logged-in user
     if user_id and user_id != request.user.id:
@@ -461,27 +461,27 @@ def index_view(request, user_id=None):
     }
     return render(request, 'index.html', context)
 
-@login_required
+@login_required(login_url='/login/')
 def edit_about_view(request, about_id):
     return render(request, 'about.html', {'is_edit': True, 'item_id': about_id, 'user': request.user})
 
-@login_required
+@login_required(login_url='/login/')
 def edit_skills_view(request, skill_id):
     return render(request, 'skills.html', {'is_edit': True, 'item_id': skill_id, 'user': request.user})
 
-@login_required
+@login_required(login_url='/login/')
 def edit_services_view(request, service_id):
     return render(request, 'services.html', {'is_edit': True, 'item_id': service_id, 'user': request.user})
 
-@login_required
+@login_required(login_url='/login/')
 def edit_portfolio_view(request, portfolio_id):
     return render(request, 'portfolio.html', {'is_edit': True, 'item_id': portfolio_id, 'user': request.user})
 
-@login_required
+@login_required(login_url='/login/')
 def edit_qualifications_view(request, qualification_id):
     return render(request, 'qualifications.html', {'is_edit': True, 'item_id': qualification_id, 'user': request.user})
 
-@login_required
+@login_required(login_url='/login/')
 def edit_testimonials_view(request, testimonial_id):
     return render(request, 'testimonials.html', {'is_edit': True, 'item_id': testimonial_id, 'user': request.user})
 
