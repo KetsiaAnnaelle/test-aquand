@@ -1,14 +1,16 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Portfolio, About, Skill, Qualification, Service, Testimonial
+from .models import Portfolio, About, Skill, Qualification, Service, Testimonial, UserProfile
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    first_name = forms.CharField(max_length=100, required=True)
+    last_name = forms.CharField(max_length=100, required=True)
 
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = ("username", "email", "first_name", "last_name", "password1", "password2")
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -164,9 +166,13 @@ class QualificationsForm(forms.ModelForm):
 
     def clean_year(self):
         year = self.cleaned_data.get('year')
-        if not year or len(year) != 4 or not year.isdigit():
-            raise forms.ValidationError("L'année doit être au format YYYY (ex: 2023).")
-        return year
+        try:
+            year_int = int(year)
+        except (TypeError, ValueError):
+            raise forms.ValidationError("L'année doit être un nombre.")
+        if year_int < 1900 or year_int > 2100:
+            raise forms.ValidationError("L'année doit être entre 1900 et 2100.")
+        return year_int
 
 class ServicesForm(forms.ModelForm):
     class Meta:

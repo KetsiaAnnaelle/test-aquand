@@ -15,13 +15,13 @@
         <!--==================== CSS ====================-->
         <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
 
-        <title>Ketsia | Portfolio Website</title>
+        <title>{% if user_profile %}{{ user_profile.first_name }} {{ user_profile.last_name }}{% else %}{{ user.first_name }} {{ user.last_name }}{% endif %} | Portfolio Website</title>
     </head>
     <body>
         <!--==================== HEADER ====================-->
         <header class="header" id="header">
             <nav class="nav container">
-                <a href="#" class="nav__logo">Ketsia</a>
+                <a href="#" class="nav__logo">{% if user_profile %}{{ user_profile.first_name }}{% else %}{{ user.first_name }}{% endif %}</a>
                 
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list grid">
@@ -53,6 +53,16 @@
                         <li class="nav__item">
                             <a href="#contact" class="nav__link">
                                 <i class="uil uil-message nav__icon"></i> Contact me
+                            </a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="#account" class="nav__link">
+                                <i class="uil uil-user-circle nav__icon"></i> My Account
+                            </a>
+                        </li>
+                        <li class="nav__item">
+                            <a href="/api/logout/" class="nav__link">
+                                <i class="uil uil-signout nav__icon"></i> Logout
                             </a>
                         </li>
                     </ul>
@@ -101,7 +111,7 @@
                         </div>
 
                         <div class="home__data">
-                            <h1 class="home__title" id="home-name">Hi, I'm Ketsia</h1>
+                            <h1 class="home__title" id="home-name">Hi, I'm {% if user_profile %}{{ user_profile.first_name }}{% else %}{{ user.first_name }}{% endif %}</h1>
                             <h3 class="home__subtitle" id="home-profession">FullStack developer Junior</h3>
                             <p class="home__description" id="home-description">High level experience in web design and development knowledge, producing quality work.</p>
                             <a href="#contact" class="button button--flex">
@@ -681,6 +691,64 @@
                 </div>
             </section>
 
+            <!--==================== ACCOUNT INFO ====================-->
+            <section class="contact section" id="account">
+                <h2 class="section__title">My Account</h2>
+                <span class="section__subtitle">Account Information</span>
+
+                <div class="contact__container container grid">
+                    <div>
+                        <div class="contact__information">
+                            <i class="uil uil-user contact__icon"></i>
+                            <div>
+                                <h3 class="contact__title">Full Name</h3>
+                                <span class="contact__subtitle">{% if user_profile %}{{ user_profile.first_name }} {{ user_profile.last_name }}{% else %}{{ user.first_name }} {{ user.last_name }}{% endif %}</span>
+                            </div>
+                        </div>
+
+                        <div class="contact__information">
+                            <i class="uil uil-at contact__icon"></i>
+                            <div>
+                                <h3 class="contact__title">Username</h3>
+                                <span class="contact__subtitle">{{ user.username }}</span>
+                            </div>
+                        </div>
+
+                        <div class="contact__information">
+                            <i class="uil uil-envelope contact__icon"></i>
+                            <div>
+                                <h3 class="contact__title">Email</h3>
+                                <span class="contact__subtitle">{% if user_profile %}{{ user_profile.email }}{% else %}{{ user.email }}{% endif %}</span>
+                            </div>
+                        </div>
+
+                        <div class="contact__information">
+                            <i class="uil uil-calendar-alt contact__icon"></i>
+                            <div>
+                                <h3 class="contact__title">Member Since</h3>
+                                <span class="contact__subtitle">{{ user.date_joined|date:"F d, Y" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="account__actions">
+                        <div class="account__card">
+                            <h3 class="account__card-title">Quick Actions</h3>
+                            <div class="account__buttons">
+                                <a href="/dashboard/" class="button button--flex">
+                                    <i class="uil uil-dashboard button__icon"></i>
+                                    Go to Dashboard
+                                </a>
+                                <a href="/about/" class="button button--flex">
+                                    <i class="uil uil-user button__icon"></i>
+                                    Edit Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!--==================== CONTACT ME ====================-->
             <section class="contact section" id="contact">
                 <h2 class="section__title">Contact Me</h2>
@@ -752,7 +820,7 @@
             <div class="footer__bg">
                 <div class="footer__container container grid">
                     <div>
-                        <h1 class="footer__title">Ketsia</h1>
+                        <h1 class="footer__title">{% if user_profile %}{{ user_profile.first_name }}{% else %}{{ user.first_name }}{% endif %}</h1>
                         <span class="footer__subtitle">FullStack junior developer</span>
                     </div>
 
@@ -781,7 +849,7 @@
                     </div>
                 </div>
 
-                <p class="footer__copy">&#169; Ketsia. All right reserved</p>
+                <p class="footer__copy">&#169; {% if user_profile %}{{ user_profile.first_name }}{% else %}{{ user.first_name }}{% endif %}. All right reserved</p>
             </div>
         </footer>
         

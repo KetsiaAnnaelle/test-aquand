@@ -31,9 +31,9 @@
       <h2> CONNECTEZ-VOUS</h2>
       <p class="subtitle">POUR CONTINUER</p>
       <div class="input-group">
-        <span class="input-icon"><i class="fas fa-user"></i></span>
-        <input type="text" name="username" placeholder="Nom d'utilisateur" required>
-        <div class="input-error" id="error-username"></div>
+        <span class="input-icon"><i class="fas fa-envelope"></i></span>
+        <input type="email" name="email" placeholder="Email" required>
+        <div class="input-error" id="error-email"></div>
       </div>
       <div class="input-group">
         <span class="input-icon"><i class="fas fa-lock"></i></span>
@@ -52,17 +52,17 @@
 <script type="module">
     import * as yup from 'https://cdn.jsdelivr.net/npm/yup@1.2.0/+esm';
     const loginSchema = yup.object({
-      username: yup.string().required("Le nom d'utilisateur est requis."),
+      email: yup.string().email("Adresse email invalide.").required("L'email est requis."),
       password: yup.string().required("Le mot de passe est requis."),
     });
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-      ['username', 'password'].forEach(field => {
+      ['email', 'password'].forEach(field => {
         document.getElementById('error-' + field).textContent = '';
       });
       const form = e.target;
       const formDataObj = {
-        username: form.username.value.trim(),
+        email: form.email.value.trim(),
         password: form.password.value,
       };
       try {
@@ -99,7 +99,7 @@
             confirmButtonText: 'OK',
           });
           localStorage.setItem('loggedIn', 'true');
-          window.location.href = '/dashboard/';
+          window.location.href = data.redirect_url || '/dashboard/';
         } else if (data.errors) {
           for (const [field, errors] of Object.entries(data.errors)) {
             const errorDiv = document.getElementById('error-' + field);

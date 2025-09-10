@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap">
   <link rel="stylesheet" href="{% static 'assets/css/dashboard-theme.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
   <style>
     .dashboard-main {
       margin-left: 250px;
@@ -156,6 +157,36 @@
 
     .item-edit-btn:hover { 
       background: #554ee2; 
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .item-delete-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.4em 0.6em;
+      border-radius: 6px;
+      font-size: 0.98em;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+    }
+    
+    .item-delete-btn:hover {
+      background: #c0392b;
+    }
+
+    .item-delete-btn i {
+      font-size: 0.9em;
     }
 
     @media (max-width: 1024px) {
@@ -350,7 +381,12 @@
                 ${cvHtml}
               </div>
             </div>
-            <button class="item-edit-btn" onclick="location.href='/about/edit/${about.id}/'" style="margin-top:10px;">Edit</button>
+            <div style="margin-top:10px;display:flex;gap:8px;">
+              <button class="item-edit-btn" onclick="location.href='/about/edit/${about.id}/'">Edit</button>
+              <button class="item-delete-btn" onclick="deleteAbout(${about.id})" title="Supprimer le profil">
+                <i class="fa fa-trash"></i> Supprimer
+              </button>
+            </div>
           `;
         }
       } catch (err) {}
@@ -370,7 +406,12 @@
                 <span class="item-title">${skill.skill}</span>
               </div>
               <span class="item-meta">${skill.level}</span>
-              <button class="item-edit-btn" onclick="location.href='/skills/edit/${skill.id}/'">Edit</button>
+              <div class="item-actions">
+                <button class="item-edit-btn" onclick="location.href='/skills/edit/${skill.id}/'">Edit</button>
+                <button class="item-delete-btn" onclick="deleteSkill(${skill.id})" title="Supprimer la compétence">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </div>
             </li>`;
           }
           skillsList.innerHTML = html;
@@ -392,7 +433,12 @@
                 <span class="item-title">${q.diploma}</span>
               </div>
               <span class="item-meta">${q.institution} - ${q.year}</span>
-              <button class="item-edit-btn" onclick="location.href='/qualifications/edit/${q.id}/'">Edit</button>
+              <div class="item-actions">
+                <button class="item-edit-btn" onclick="location.href='/qualifications/edit/${q.id}/'">Edit</button>
+                <button class="item-delete-btn" onclick="deleteQualification(${q.id})" title="Supprimer la qualification">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </div>
             </li>`;
           }
           qualificationsList.innerHTML = html;
@@ -414,7 +460,12 @@
                 <span class="item-title">${s.service}</span>
               </div>
               <span class="item-meta">${s.description}</span>
-              <button class="item-edit-btn" onclick="location.href='/services/edit/${s.id}/'">Edit</button>
+              <div class="item-actions">
+                <button class="item-edit-btn" onclick="location.href='/services/edit/${s.id}/'">Edit</button>
+                <button class="item-delete-btn" onclick="deleteService(${s.id})" title="Supprimer">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </div>
             </li>`;
           }
           servicesList.innerHTML = html;
@@ -438,7 +489,12 @@
               </div>
               <span class="item-meta">${p.description}</span>
               ${imgHtml}
-              <button class="item-edit-btn" onclick="location.href='/portfolio/edit/${p.id}/'">Edit</button>
+              <div class="item-actions">
+                <button class="item-edit-btn" onclick="location.href='/portfolio/edit/${p.id}/'">Edit</button>
+                <button class="item-delete-btn" onclick="deletePortfolio(${p.id})" title="Supprimer le projet">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </div>
             </li>`;
           }
           portfolioList.innerHTML = html;
@@ -460,7 +516,12 @@
                 <span class="item-title">${t.author}</span>
               </div>
               <span class="item-meta">${t.testimonial}</span>
-              <button class="item-edit-btn" onclick="location.href='/testimonials/edit/${t.id}/'">Edit</button>
+              <div class="item-actions">
+                <button class="item-edit-btn" onclick="location.href='/testimonials/edit/${t.id}/'">Edit</button>
+                <button class="item-delete-btn" onclick="deleteTestimonial(${t.id})" title="Supprimer">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              </div>
             </li>`;
           }
           testimonialsList.innerHTML = html;
@@ -568,6 +629,260 @@
         closeMobileMenu();
       }
     });
+
+    // Preview functionality
+    function checkFormCompletion() {
+      // Check if all forms have been filled
+      const hasAbout = localStorage.getItem('about_completed') === 'true';
+      const hasSkills = localStorage.getItem('skills_completed') === 'true';
+      const hasServices = localStorage.getItem('services_completed') === 'true';
+      const hasPortfolio = localStorage.getItem('portfolio_completed') === 'true';
+      const hasQualifications = localStorage.getItem('qualifications_completed') === 'true';
+      const hasTestimonials = localStorage.getItem('testimonials_completed') === 'true';
+      
+      return hasAbout && hasSkills && hasServices && hasPortfolio && hasQualifications && hasTestimonials;
+    }
+
+    function updatePreviewButton() {
+      const previewBtn = document.getElementById('previewBtn');
+      if (previewBtn) {
+        if (checkFormCompletion()) {
+          previewBtn.style.display = 'block';
+          previewBtn.classList.add('enabled');
+        } else {
+          previewBtn.style.display = 'none';
+          previewBtn.classList.remove('enabled');
+        }
+      }
+    }
+
+    // Check form completion on page load
+    updatePreviewButton();
+
+    // Listen for form submissions to update completion status
+    document.addEventListener('formSubmitted', function(e) {
+      const formType = e.detail.formType;
+      localStorage.setItem(`${formType}_completed`, 'true');
+      updatePreviewButton();
+    });
+
+    // Delete functions
+    async function deleteAbout(id) {
+      const result = await Swal.fire({
+        title: 'Supprimer ?',
+        text: 'Êtes-vous sûr de vouloir supprimer ce profil ? ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+      });
+      if (!result.isConfirmed) return;
+      try {
+        const response = await fetch(`{{ base_url }}/api/about/delete/${id}/`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          await Swal.fire({ icon: 'success', title: 'Profil supprimé !', confirmButtonText: 'OK' });
+          loadAboutCard();
+        } else {
+          Swal.fire({ icon: 'error', title: 'Erreur', text: data.error || 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+        }
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+      }
+    }
+
+    async function deleteSkill(id) {
+      const result = await Swal.fire({
+        title: 'Supprimer ?',
+        text: 'Êtes-vous sûr de vouloir supprimer cette compétence ? ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+      });
+      if (!result.isConfirmed) return;
+      try {
+        const response = await fetch(`{{ base_url }}/api/skills/delete/${id}/`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          await Swal.fire({ icon: 'success', title: 'Compétence supprimée !', confirmButtonText: 'OK' });
+          loadSkills();
+        } else {
+          Swal.fire({ icon: 'error', title: 'Erreur', text: data.error || 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+        }
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+      }
+    }
+
+    async function deleteQualification(id) {
+      const result = await Swal.fire({
+        title: 'Supprimer ?',
+        text: 'Êtes-vous sûr de vouloir supprimer cette qualification ? ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+      });
+      if (!result.isConfirmed) return;
+      try {
+        const response = await fetch(`{{ base_url }}/api/qualifications/delete/${id}/`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          await Swal.fire({ icon: 'success', title: 'Qualification supprimée !', confirmButtonText: 'OK' });
+          loadQualifications();
+        } else {
+          Swal.fire({ icon: 'error', title: 'Erreur', text: data.error || 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+        }
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+      }
+    }
+
+    async function deleteService(id) {
+      const result = await Swal.fire({
+        title: 'Supprimer ?',
+        text: 'Êtes-vous sûr de vouloir supprimer ce service ? ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+      });
+      if (!result.isConfirmed) return;
+      try {
+        const response = await fetch(`{{ base_url }}/api/services/delete/${id}/`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          await Swal.fire({ icon: 'success', title: 'Service supprimé !', confirmButtonText: 'OK' });
+          loadServices();
+        } else {
+          Swal.fire({ icon: 'error', title: 'Erreur', text: data.error || 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+        }
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+      }
+    }
+
+    async function deletePortfolio(id) {
+      const result = await Swal.fire({
+        title: 'Supprimer ?',
+        text: 'Êtes-vous sûr de vouloir supprimer ce projet ? ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+      });
+      if (!result.isConfirmed) return;
+      try {
+        const response = await fetch(`{{ base_url }}/api/portfolio/delete/${id}/`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          await Swal.fire({ icon: 'success', title: 'Projet supprimé !', confirmButtonText: 'OK' });
+          loadPortfolio();
+        } else {
+          Swal.fire({ icon: 'error', title: 'Erreur', text: data.error || 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+        }
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+      }
+    }
+
+    async function deleteTestimonial(id) {
+      const result = await Swal.fire({
+        title: 'Supprimer ?',
+        text: 'Êtes-vous sûr de vouloir supprimer ce témoignage ? ',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Oui, supprimer',
+        cancelButtonText: 'Annuler'
+      });
+      if (!result.isConfirmed) return;
+      try {
+        const response = await fetch(`{{ base_url }}/api/testimonials/delete/${id}/`, { method: 'DELETE' });
+        const data = await response.json();
+        if (data.success) {
+          await Swal.fire({ icon: 'success', title: 'Témoignage supprimé !', confirmButtonText: 'OK' });
+          loadTestimonials();
+        } else {
+          Swal.fire({ icon: 'error', title: 'Erreur', text: data.error || 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+        }
+      } catch (err) {
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Erreur lors de la suppression', confirmButtonText: 'OK' });
+      }
+    }
   </script>
+
+  <!-- Floating Preview Button -->
+  <div id="previewBtn" class="floating-preview-btn" style="display: none;">
+    <a href="/index/{{ user.id }}/" target="_blank" title="Preview Your Portfolio">
+      <i class="fas fa-eye"></i>
+    </a>
+  </div>
+
+  <style>
+    .floating-preview-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      animation: pulse 2s infinite;
+    }
+
+    .floating-preview-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .floating-preview-btn a {
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .floating-preview-btn.enabled {
+      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+      50% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 10px rgba(76, 175, 80, 0.2);
+      }
+      100% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .floating-preview-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+      }
+      
+      .floating-preview-btn a {
+        font-size: 20px;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
 </body>
 </html>

@@ -93,14 +93,17 @@
           <img id="currentImageSrc" style="max-width: 200px; border-radius: 8px;">
         </div>
       <button type="submit">{% if is_edit %}Modifier{% else %}Ajouter{% endif %}</button>
+        {% if is_edit %}
+        <input type="hidden" id="edit_item_id" value="{{ item_id }}">
+        {% endif %}
         <div id="form-status"></div>
     </form>
     </div>
   </main>
   <script>
-    // Check if we're in edit mode
-    const isEditMode = {{ is_edit|yesno:"true,false" }};
-    const itemId = {{ item_id|default:"null" }};
+    // Determine edit mode from hidden input
+    const isEditMode = !!document.getElementById('edit_item_id');
+    const itemId = isEditMode ? document.getElementById('edit_item_id').value : null;
     
     // Load existing data if in edit mode
     if (isEditMode && itemId) {
@@ -155,6 +158,11 @@
           const data = await response.json();
           if (data.success) {
             statusDiv.innerHTML = '<span style="color:green;">Projet modifié avec succès !</span>';
+            
+            // Dispatch form submitted event
+            const event = new CustomEvent('formSubmitted', { detail: { formType: 'portfolio' } });
+            document.dispatchEvent(event);
+            
             setTimeout(() => {
               window.location.href = '/dashboard';
             }, 1500);
@@ -172,6 +180,11 @@
           const data = await response.json();
           if (data.success) {
             statusDiv.innerHTML = '<span style="color:green;">Projet ajouté avec succès !</span>';
+            
+            // Dispatch form submitted event
+            const event = new CustomEvent('formSubmitted', { detail: { formType: 'portfolio' } });
+            document.dispatchEvent(event);
+            
             form.reset();
           } else if (data.errors) {
             for (const [field, errors] of Object.entries(data.errors)) {

@@ -98,15 +98,18 @@
         <input type="text" name="year" placeholder="Année">
         <div class="input-error" id="error-year"></div>
       <button type="submit">{% if is_edit %}Modifier{% else %}Ajouter{% endif %}</button>
+        {% if is_edit %}
+        <input type="hidden" id="edit_item_id" value="{{ item_id }}">
+        {% endif %}
         <div id="form-status"></div>
     </form>
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
   <script>
-    // Check if we're in edit mode
-    const isEditMode = {{ is_edit|yesno:"true,false" }};
-    const itemId = {{ item_id|default:"null" }};
+    // Determine edit mode from hidden input
+    const isEditMode = !!document.getElementById('edit_item_id');
+    const itemId = isEditMode ? document.getElementById('edit_item_id').value : null;
     
     // Load existing data if in edit mode
     if (isEditMode && itemId) {
@@ -203,6 +206,11 @@
               confirmButtonText: 'OK',
             });
             statusDiv.innerHTML = '<span style="color:green;">Qualification modifiée !</span>';
+            
+            // Dispatch form submitted event
+            const event = new CustomEvent('formSubmitted', { detail: { formType: 'qualifications' } });
+            document.dispatchEvent(event);
+            
             setTimeout(() => {
               window.location.href = '/dashboard';
             }, 1500);
@@ -244,8 +252,13 @@
               confirmButtonText: 'OK',
             });
             statusDiv.innerHTML = '<span style="color:green;">Qualification ajoutée !</span>';
+            
+            // Dispatch form submitted event
+            const event = new CustomEvent('formSubmitted', { detail: { formType: 'qualifications' } });
+            document.dispatchEvent(event);
+            
             form.reset();
-        } else if (data.errors) {
+          } else if (data.errors) {
           // Show server-side errors under each field if possible
           for (const [field, errors] of Object.entries(data.errors)) {
             const errorDiv = document.getElementById('error-' + field);
@@ -268,6 +281,7 @@
             html: errorList,
             confirmButtonText: 'OK',
           });
+          }
         }
       } catch (err) {
         statusDiv.innerHTML = '<p style="color:red;">Erreur lors de la soumission du formulaire.</p>';

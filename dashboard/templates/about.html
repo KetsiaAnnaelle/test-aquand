@@ -32,7 +32,13 @@
             </g>
           </svg>
         </div>
-        
+        {% if user_profile %}
+        <h3 id="mobileSidebarUserName">{{ user_profile.first_name }} {{ user_profile.last_name }}</h3>
+        <p id="mobileSidebarUserRole">{{ user.username }}</p>
+        {% else %}
+        <h3 id="mobileSidebarUserName">{{ user.first_name }} {{ user.last_name }}</h3>
+        <p id="mobileSidebarUserRole">{{ user.username }}</p>
+        {% endif %}
       </div>
       <button class="mobile-menu-close" id="mobileMenuClose">
         <i class="fas fa-times"></i>
@@ -65,8 +71,13 @@
           </g>
         </svg>
       </div>
-      <!-- <h3 id="sidebarUserName">Ketsia</h3>
-      <p id="sidebarUserRole">User</p> -->
+      {% if user_profile %}
+      <h3 id="sidebarUserName">{{ user_profile.first_name }} {{ user_profile.last_name }}</h3>
+      <p id="sidebarUserRole">{{ user.username }}</p>
+      {% else %}
+      <h3 id="sidebarUserName">{{ user.first_name }} {{ user.last_name }}</h3>
+      <p id="sidebarUserRole">{{ user.username }}</p>
+      {% endif %}
     </div>
     <nav>
       <a href="/dashboard"><i class="fas fa-th-large"></i>Dashboard</a>
@@ -161,20 +172,18 @@
         </div>
 
         <button type="submit">{% if is_edit %}Modifier{% else %}Enregistrer{% endif %}</button>
+        {% if is_edit %}
+        <input type="hidden" id="edit_item_id" value="{{ item_id }}">
+        {% endif %}
         <div id="form-status"></div>
       </form>
     </div>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
   <script>
-    // Check if we're in edit mode
-    const isEditMode = {{ is_edit|yesno:"true,false" }};
-    const itemId = {{ item_id|default:"null" }};
-    
-    // Load existing data if in edit mode
-    if (isEditMode && itemId) {
-      loadAboutData(itemId);
-    }
+    // Determine edit mode from hidden input
+    const isEditMode = !!document.getElementById('edit_item_id');
+    const itemId = isEditMode ? document.getElementById('edit_item_id').value : null;
     
     async function loadAboutData(id) {
       try {
@@ -315,6 +324,11 @@
               confirmButtonText: 'OK',
             });
             statusDiv.innerHTML = '<span style="color:green;">Profil modifié !</span>';
+            
+            // Dispatch form submitted event
+            const event = new CustomEvent('formSubmitted', { detail: { formType: 'about' } });
+            document.dispatchEvent(event);
+            
             setTimeout(() => {
               window.location.href = '/dashboard';
             }, 1500);
@@ -357,7 +371,11 @@
             });
             statusDiv.innerHTML = '<span style="color:green;">Profil mis à jour !</span>';
             form.reset();
-        } else if (data.errors) {
+            
+            // Dispatch form submitted event
+            const event = new CustomEvent('formSubmitted', { detail: { formType: 'about' } });
+            document.dispatchEvent(event);
+          } else if (data.errors) {
           // Show server-side errors under each field if possible
           for (const [field, errors] of Object.entries(data.errors)) {
             const errorDiv = document.getElementById('error-' + field);
@@ -380,6 +398,7 @@
             html: errorList,
             confirmButtonText: 'OK',
           });
+          }
         }
       } catch (err) {
         statusDiv.innerHTML = '<p style="color:red;">Erreur lors de la soumission du formulaire.</p>';

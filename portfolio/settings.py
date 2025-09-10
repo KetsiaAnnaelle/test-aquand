@@ -108,28 +108,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:5501",
-    "http://localhost:5501",
-    "http://127.0.0.1:5500",
-    "http://localhost:5500",
-    "http://127.0.0.1:5502",
-    "http://localhost:5502",
-    "http://127.0.0.1:5503",
-    "http://localhost:5503",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
     "https://elketsy.pythonanywhere.com",
     "http://elketsy.pythonanywhere.com",
     "https://test-aquand-1.onrender.com"
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5501",
-    "http://localhost:5501",
-    "http://127.0.0.1:5500",
-    "http://localhost:5500",
-    "http://127.0.0.1:5502",
-    "http://localhost:5502",
-    "http://127.0.0.1:5503",
-    "http://localhost:5503",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
     "https://elketsy.pythonanywhere.com",
     "http://elketsy.pythonanywhere.com",
     "https://test-aquand-1.onrender.com"
@@ -169,3 +157,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User Model
+# AUTH_USER_MODEL = 'dashboard.CustomUser'
