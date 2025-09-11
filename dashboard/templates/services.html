@@ -33,19 +33,24 @@
             </g>
           </svg>
         </div>
-        <!-- <h3 id="sidebarUserName">Loading...</h3>
-        <p id="sidebarUserRole">Loading...</p>
-      </div> -->
+        {% if user_profile %}
+        <h3 id="mobileSidebarUserName">{{ user_profile.first_name }} {{ user_profile.last_name }}</h3>
+        <p id="mobileSidebarUserRole">{{ user.username }}</p>
+        {% else %}
+        <h3 id="mobileSidebarUserName">{{ user.first_name }} {{ user.last_name }}</h3>
+        <p id="mobileSidebarUserRole">{{ user.username }}</p>
+        {% endif %}
+      </div>
       <button class="mobile-menu-close" id="mobileMenuClose">
         <i class="fas fa-times"></i>
       </button>
     </div>
     <nav>
       <a href="/dashboard"><i class="fas fa-th-large"></i>Dashboard</a>
-      <a href="/about"><i class="fas fa-user"></i>About</a>
+      <a href="/about" class="active"><i class="fas fa-user"></i>About</a>
       <a href="/skills"><i class="fas fa-code"></i>Skills</a>
       <a href="/qualifications"><i class="fas fa-graduation-cap"></i>Qualifications</a>
-      <a href="/services" class="active"><i class="fas fa-briefcase"></i>Services</a>
+      <a href="/services"><i class="fas fa-briefcase"></i>Services</a>
       <a href="/portfolio"><i class="fas fa-folder-open"></i>Portfolio</a>
       <a href="/testimonials"><i class="fas fa-comments"></i>Testimonial</a>
     </nav>
