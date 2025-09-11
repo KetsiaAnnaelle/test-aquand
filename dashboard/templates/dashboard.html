@@ -295,7 +295,6 @@
       <a href="/services"><i class="fas fa-briefcase"></i>Services</a>
       <a href="/portfolio"><i class="fas fa-folder-open"></i>Portfolio</a>
       <a href="/testimonials"><i class="fas fa-comments"></i>Testimonial</a>
-      <a href="/contact"><i class="fas fa-envelope"></i>Contact</a>
     </nav>
   </aside>
 
@@ -324,7 +323,6 @@
       <a href="/services"><i class="fas fa-briefcase"></i>Services</a>
       <a href="/portfolio"><i class="fas fa-folder-open"></i>Portfolio</a>
       <a href="/testimonials"><i class="fas fa-comments"></i>Testimonial</a>
-      <a href="/contact"><i class="fas fa-envelope"></i>Contact</a>
     </nav>
   </aside>
 
@@ -663,6 +661,9 @@
       mobileSidebar.classList.remove('active');
       mobileMenuOverlay.classList.remove('active');
       document.body.style.overflow = '';
+      // Clear inline styles set during open to fully hide on small screens
+      mobileSidebar.style.display = '';
+      mobileSidebar.style.left = '';
     }
 
     if (mobileMenuToggle) {
